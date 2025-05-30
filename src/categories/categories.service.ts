@@ -68,4 +68,17 @@ export class CategoriesService {
         throw new Error(`Error deleting category: ${error.message}`);
       });
   }
+
+  async findBooksByCategory(categoryId: number) {
+    const category = await this.categoryRepository.findOne({
+      where: { id: categoryId },
+      relations: ['books'],
+    });
+
+    if (!category) {
+      throw new Error(`Category with ID ${categoryId} not found`);
+    }
+
+    return category.books;
+  }
 }
